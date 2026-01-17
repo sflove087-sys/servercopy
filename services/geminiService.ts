@@ -1,17 +1,9 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { NIDRecord, SourceType } from "../types.ts";
+import { NIDRecord, SourceType } from "../types";
 
-// Defensive check for process.env to prevent ReferenceError in browser environments
-const getApiKey = () => {
-  try {
-    return process.env.API_KEY || '';
-  } catch (e) {
-    return '';
-  }
-};
-
-const ai = new GoogleGenAI({ apiKey: getApiKey() });
+// Always use the direct process.env.API_KEY as per the guidelines
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const NID_SCHEMA = {
   type: Type.ARRAY,
@@ -41,11 +33,6 @@ export const extractNIDData = async (
   fileName: string,
   sourceType: SourceType = 'LOCAL'
 ): Promise<NIDRecord[]> => {
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    throw new Error("System configuration missing: API Key not detected.");
-  }
-
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-pro-preview",
@@ -78,7 +65,10 @@ export const extractNIDData = async (
       },
     });
 
-    let jsonStr = response.text?.trim() || "[]";
+    const text = response.text;
+    if (!text) return [];
+
+    let jsonStr = text.trim();
     if (jsonStr.startsWith("```")) {
       jsonStr = jsonStr.replace(/^```(?:json)?\n?/, "").replace(/\n?```$/, "");
     }
@@ -105,6 +95,6 @@ export const extractNIDData = async (
     }));
   } catch (error: any) {
     console.error("Extraction Error:", error);
-    throw new Error("Processing failed: " + (error?.message || "Check document quality."));
+    throw new Error("Processing failed: " + (error?.message || "Check document quality or API configuration."));
   }
 };
