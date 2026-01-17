@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useCallback } from 'react';
-import { extractNIDData } from '../services/geminiService';
-import { NIDRecord } from '../types';
+import { extractNIDData } from '../services/geminiService.ts';
+import { NIDRecord } from '../types.ts';
 
 interface UploaderProps {
   onDataExtracted: (records: NIDRecord[]) => void;
@@ -97,7 +97,6 @@ const Uploader: React.FC<UploaderProps> = ({ onDataExtracted, driveFolderId }) =
 
   const handleSyncDrive = () => {
     setIsSyncing(true);
-    // Simulating drive sync for demonstration
     setTimeout(() => {
       const mockDriveRecords: NIDRecord[] = [
         {
@@ -122,7 +121,6 @@ const Uploader: React.FC<UploaderProps> = ({ onDataExtracted, driveFolderId }) =
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Multi-PDF Drop Zone */}
         <div 
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
@@ -163,7 +161,6 @@ const Uploader: React.FC<UploaderProps> = ({ onDataExtracted, driveFolderId }) =
           </button>
         </div>
 
-        {/* Sync Card */}
         <div className="bg-white border border-slate-200 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-center shadow-sm">
            <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-6">
               <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -190,7 +187,6 @@ const Uploader: React.FC<UploaderProps> = ({ onDataExtracted, driveFolderId }) =
         </div>
       </div>
 
-      {/* Batch Processing Status Overlay/List */}
       {queue.length > 0 && (
         <div className="bg-white rounded-[2.5rem] border border-slate-200 overflow-hidden shadow-2xl animate-in slide-in-from-top-4 duration-500">
           <div className="px-8 py-6 bg-slate-900 text-white flex justify-between items-center">

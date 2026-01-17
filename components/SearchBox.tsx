@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { SearchFilters } from '../types';
+import { SearchFilters } from '../types.ts';
 
 interface SearchBoxProps {
   onSearch: (filters: SearchFilters) => void;

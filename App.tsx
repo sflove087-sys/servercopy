@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { NIDRecord, SearchFilters, AppView } from './types';
-import SearchBox from './components/SearchBox';
-import Uploader from './components/Uploader';
+import { NIDRecord, SearchFilters, AppView } from './types.ts';
+import SearchBox from './components/SearchBox.tsx';
+import Uploader from './components/Uploader.tsx';
 
 const DEFAULT_DRIVE_FOLDER_ID = "1RlLX_K0YAwvrKbhg9L8yWRILn9P-70mE";
 
@@ -47,7 +47,6 @@ const App: React.FC = () => {
   };
 
   const extractFolderId = (input: string) => {
-    // Matches patterns like .../folders/ID or just the ID itself
     const match = input.match(/[-\w]{25,}/);
     return match ? match[0] : input.trim();
   };
@@ -360,7 +359,6 @@ const App: React.FC = () => {
               </div>
             </header>
 
-            {/* Cloud Config Section */}
             <div className="bg-white rounded-[2rem] border border-slate-200 p-8 shadow-sm space-y-4">
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-3">

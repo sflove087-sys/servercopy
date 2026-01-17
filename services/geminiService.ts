@@ -1,6 +1,6 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { NIDRecord, SourceType } from "../types";
+import { NIDRecord, SourceType } from "../types.ts";
 
 // Always use the direct process.env.API_KEY as per the guidelines
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
