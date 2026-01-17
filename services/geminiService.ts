@@ -1,8 +1,17 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
-import { NIDRecord, SourceType } from "../types";
+import { NIDRecord, SourceType } from "../types.ts";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Defensive check for process.env to prevent ReferenceError in browser environments
+const getApiKey = () => {
+  try {
+    return process.env.API_KEY || '';
+  } catch (e) {
+    return '';
+  }
+};
+
+const ai = new GoogleGenAI({ apiKey: getApiKey() });
 
 const NID_SCHEMA = {
   type: Type.ARRAY,
@@ -32,6 +41,11 @@ export const extractNIDData = async (
   fileName: string,
   sourceType: SourceType = 'LOCAL'
 ): Promise<NIDRecord[]> => {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    throw new Error("System configuration missing: API Key not detected.");
+  }
+
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-pro-preview",
