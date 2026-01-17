@@ -12,10 +12,15 @@
     <style>
         body { font-family: 'Inter', 'Hind Siliguri', sans-serif; }
         .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        /* Loading indicator shown while #root is empty */
         #root:empty { min-height: 100vh; background: #f8fafc; display: flex; align-items: center; justify-content: center; }
         #root:empty::after { content: "Initializing Secure Portal..."; font-weight: 900; color: #6366f1; letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
     </style>
+    <script>
+        // Ensure process.env exists to prevent "ReferenceError: process is not defined"
+        window.process = window.process || { env: { API_KEY: '' } };
+    </script>
 <script type="importmap">
 {
   "imports": {

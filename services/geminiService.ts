@@ -2,8 +2,21 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { NIDRecord, SourceType } from "../types.ts";
 
-// Always use the direct process.env.API_KEY as per the guidelines
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+/**
+ * Lazily initialize the AI client to ensure process.env.API_KEY is available 
+ * when the first call is made, preventing top-level module crashes.
+ */
+let aiInstance: GoogleGenAI | null = null;
+const getAI = () => {
+  if (!aiInstance) {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+      console.warn("Gemini API Key is not detected in process.env.API_KEY");
+    }
+    aiInstance = new GoogleGenAI({ apiKey: apiKey || '' });
+  }
+  return aiInstance;
+};
 
 const NID_SCHEMA = {
   type: Type.ARRAY,
@@ -33,6 +46,8 @@ export const extractNIDData = async (
   fileName: string,
   sourceType: SourceType = 'LOCAL'
 ): Promise<NIDRecord[]> => {
+  const ai = getAI();
+  
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-pro-preview",
