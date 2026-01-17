@@ -1,0 +1,7 @@
+{
+  "name": "NID Intelligent Search Pro",
+  "description": "A high-performance search and extraction tool for NID documents, powered by Gemini 3.0. Index your PDF/Image records and perform secure lookups by NID digits and DOB.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
